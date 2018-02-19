@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="useGeneratedKeys" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.exam.spring.vo.ConnectionInfoVo" alias="ci" />
+		<typeAlias type="com.exam.spring.vo.TableVO" alias="tvo" />
+		<typeAlias type="com.exam.spring.vo.ColumnVO" alias="cvo" />
+	</typeAliases>
+	
+	<mappers>
+		<mapper resource="sql/connection_info.xml" />
+		<mapper resource="sql/query.xml" />
+	</mappers>
+	
+</configuration>

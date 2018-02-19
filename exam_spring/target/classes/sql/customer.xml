@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="customer">
+	<select id="getCustomerList" parameterType="map"
+		resultType="com.iot.test.vo.Customer">
+		SELECT * FROM CUSTOMER order by ${str}
+	</select>
+
+	<select id="selectCustomer" parameterType="map"
+		resultType="com.iot.test.vo.Customer">
+		SELECT * FROM CUSTOMER where ${selectType} like
+		'%${searchStr}%'
+	</select>
+	
+	<insert id="insertCustomer" parameterType="ct">
+		insert into customer(customerName,city,country)
+		values(#{customerName},#{city},#{country})
+	</insert>
+	
+	<delete id="deleteCustomer" parameterType="int">
+		delete from customer
+		where customerID = #{num}
+	</delete>
+	
+	<update id="updateCustomer" parameterType="ct">
+		update customer
+		set
+		customerName = #{customerName}, city = #{city}, country = #{country}
+		where customerID = #{customerID}
+	</update>
+</mapper>

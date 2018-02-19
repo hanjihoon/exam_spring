@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="emp">
+	<select id="selectEmpList" resultType="e">
+		SELECT empNo,empName,empSal FROM EMP;
+	</select>
+	<select id="selectEmpOne" resultType="e" parameterType="int">
+		SELECT empNo,empName,empSal FROM EMP where empNo=#{empNo};
+	</select>
+	<update id="updateEmp" parameterType="e">
+		update emp
+		set empName = #{empName},empSal = #{empSal}
+		where empNo = #{empNo}
+	</update>
+	<insert id="insertEmp" parameterType="e">
+		insert into emp(empName,empSal)
+		values(#{empName},#{empSal})
+	</insert>
+</mapper>

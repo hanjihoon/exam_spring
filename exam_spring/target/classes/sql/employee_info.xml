@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="em">
+
+	<select id="selectEmployee" resultType="em" parameterType="em">
+		SELECT
+		emNo,emName,emId,dpNo,emAd,emEmail,emPhone,emSal,emPwd,emReg,admin
+		FROM EMP_INFO where 1=1
+		<if test="emID!=null">
+			and emID = #{emID}
+		</if>
+		<if test="emPwd!=null">
+			and emPwd=#{emPwd}
+		</if>
+	</select>
+	
+	<insert id="insertEmployee" parameterType="em">
+		insert into
+		emp_info(emName,emId,dpNo,emAd,emEmail,emPhone,emSal,emPwd,admin,emReg)
+		values(#{emName},#{emID},#{dpNo},#{emAd},#{emEmail},#{emPhone},#{emSal},#{emPwd},#{admin},now())
+	</insert>
+
+</mapper>
