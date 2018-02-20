@@ -46,6 +46,7 @@ var tableInfoGrid, tableDataGrid;
 var resultGrids = [];
 var forDelTag = /\<\/?\w+\>/gi;
 var dbName;
+const qEditorText = "Type some Query here";
 function connectionListCB(res){
    dbTree = aLay.attachTreeView({
        items: res.list
@@ -259,9 +260,7 @@ dhtmlxEvent(window,"load",function(){
 		    ]
 	});
 	
-   var bTabsQueryEditor = bTabs.tabs("sql").attachEditor({
-	   content:"Type some Query here",
-	   });
+   var bTabsQueryEditor = bTabs.tabs("sql").attachEditor({content: qEditorText});
    var bTabsQueryToolbar = bTabs.tabs("sql").attachToolbar();
    bTabsQueryToolbar.addButton("run",1,"RUN");
    bTabsQueryToolbar.addButton("clear",2,"CLEAR");
@@ -281,6 +280,11 @@ dhtmlxEvent(window,"load",function(){
 		   		var sql = bTabsQueryEditor.getContent()
 		   		runQuery(sql);
 		   	}
+	    }else if(eventName=="focus"){
+	    	var text = this.getContent();
+	    	if(text==qEditorText){
+	    		this.setContent("");
+	    	}
 	    }
 	});
 	cLay = bodyLayout.cells("c");
