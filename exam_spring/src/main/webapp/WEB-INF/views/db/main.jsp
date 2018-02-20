@@ -122,7 +122,6 @@ function querySelectCB(res){
 	if(res.errorMsg){
 		alert(res.errorMSG);
 	}
-	
 	if(res.conMSG){
 		alert(res.conMSG);
 	}
@@ -152,30 +151,17 @@ function querySelectCB(res){
 		}
 		cTabbar.tabs("result"+key).setActive();
 	}
-		
-		
-		
-		$("#resultMSG").append("<br><em><b>"+res.msg+"</b></em>");
+	$("#resultMSG").append("<br><em><b>"+res.selectMsg+"</b></em>");
+	$("#resultMSG").append("<br><em><b>"+res.updateMsg+"</b></em>");
 		console.log(res);
 	}
-function queryUpdateCB(res){
-	if(res.errorMSG){
-		alert(res.errorMSG);
-	}
-	
-	if(res.conMSG){
-	alert(res.conMSG);
-	}
-	
-	$("#resultMSG").append("<br><em><b>"+res.msg+"</b></em>");
-	console.log(res);
-}
+
 
 function addConnectionCB(res){
-   console.log(res);
+   console.log(res.msg);
 }
 
-function queryEvent(sql){
+/* function queryEvent(sql){
 	select = /select/gi;
 	if(select.test(sql)){
 		var auFQ = new AjaxUtilFQ("${root}/query/select/",sql,null,"post");
@@ -184,7 +170,7 @@ function queryEvent(sql){
 		var auFQ = new AjaxUtilFQ("${root}/query/update/",sql,null,"post");
 		auFQ.send(queryUpdateCB);
 	}
-}
+} */
 dhtmlxEvent(window,"load",function(){
 	bodyLayout = new dhtmlXLayoutObject(document.body,"3L");
 	logFoot = bodyLayout.attachFooter("footDiv");
@@ -254,7 +240,8 @@ dhtmlxEvent(window,"load",function(){
 		   	bActvId = bTabs.getActiveTab();
 		   	if(evObj.which==120 && evObj.ctrlKey && evObj.shiftKey && bActvId=="sql"){
 		   		sql = qEditor.getContent().replace(forDelTag,"");
-		   		queryEvent(sql);
+		   		var auFQ = new AjaxUtilFQ("${root}/query/select/",sql,null,"post");
+				auFQ.send(querySelectCB);
 		   	}
 	    }
 	});
@@ -294,8 +281,6 @@ dhtmlxEvent(window,"load",function(){
          form.clear();
       }
    });
-
-   
 })
 	
 $(document).ready(function(){

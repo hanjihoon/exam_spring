@@ -39,11 +39,13 @@ public class QueryController {
 					updateSqlList.add(str);
 				}
 			}
+			if (selectSqlList != null) {
 			List<List<Map<String, Object>>> selectLists = new ArrayList<List<Map<String, Object>>>();
 			selectLists = qs.getSelectQuery(selectSqlList, hs, map);
+			map.put("lists", selectLists);
+			}
 			if (updateSqlList != null) {
 				qs.getUpdateQuery(updateSqlList, hs, map);
-				map.put("lists", selectLists);
 			}
 			log.info("{}", map);
 		} else {

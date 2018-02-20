@@ -19,7 +19,8 @@ public class QueryServiceImpl implements QueryService {
 	QueryDAO qdao;
 
 	@Override
-	public List<List<Map<String, Object>>> getSelectQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap) {
+	public List<List<Map<String, Object>>> getSelectQuery(ArrayList<String> sql, HttpSession hs,
+			Map<String, Object> rMap) {
 		SqlSession ss = (SqlSession) hs.getAttribute("sqlSession");
 		List<List<Map<String, Object>>> qrLists = new ArrayList<List<Map<String, Object>>>();
 		for (String str : sql) {
@@ -31,24 +32,17 @@ public class QueryServiceImpl implements QueryService {
 				map.put("id", ++index);
 			}
 		}
+		rMap.put("selectMsg", "/* Affected rows:" + qrLists.size() + "찾은 행: 0  경고: 0*/");
 		return qrLists;
 	}
 
 	@Override
 	public void getUpdateQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap) {
 		SqlSession ss = (SqlSession) hs.getAttribute("sqlSession");
-		if (hs.getAttribute("sqlSession") != null) {
-			int result = 0;
-			for (String str : sql) {
-				result += qdao.updateQuery(str, ss);
-			}
-			rMap.put("msg", "SQL 오류");
-			if (result > 0) {
-				rMap.put("msg", "/* Affected rows:" + result + "찾은 행: 0  경고: 0*/");
-			}
-		} else {
-			rMap.put("conMSG", "커넥션이 필요합니다!");
+		int result = 0;
+		for (String str : sql) {
+			result += qdao.updateQuery(str, ss);
 		}
+		rMap.put("updateMsg", "/* Affected rows:" + result + "찾은 행: 0  경고: 0*/");
 	}
-
 }
