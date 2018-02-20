@@ -50,7 +50,7 @@ public class ConnectionInfoController {
 		return map;
 	}
 	
-	@RequestMapping(value="/db_list/{ciNo}", method=RequestMethod.GET)
+	@RequestMapping(value="/db_list/{ciNo}", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> getDatabaseList(@PathVariable("ciNo") int ciNo,
 			Map<String,Object> map,HttpSession hs) {
 		List<Map<String, Object>> dbList;
@@ -71,7 +71,7 @@ public class ConnectionInfoController {
 		cis.getInsertConnectionInfo(map, ci);
 		return map;
 	}
-	@RequestMapping(value="/tables/{dbName}/{parentId}", method=RequestMethod.GET)
+	@RequestMapping(value="/tables/{dbName}/{parentId}", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> getTabeList(
 			@PathVariable("dbName")String dbName, 
 			@PathVariable("parentId")String parentId,
@@ -85,7 +85,7 @@ public class ConnectionInfoController {
 		return map;
 	}
 
-	@RequestMapping(value="/columns/{dbName}/{tableName}", method=RequestMethod.GET)
+	@RequestMapping(value="/columns/{dbName}/{tableName}", method=RequestMethod.POST)
 	public @ResponseBody Map<String,Object> getColumnList(
 			@PathVariable("dbName")String dbName, 
 			@PathVariable("tableName")String tableName,
@@ -100,9 +100,21 @@ public class ConnectionInfoController {
 		log.info("{}",columnList);
 		return map;
 	}
-	@RequestMapping(value="/columns", method=RequestMethod.GET)
-	public @ResponseBody Map<String,Object> getColumnList(Map<String,Object> map) {
-		//cis.getColumnList(hs, map)
+	
+	@RequestMapping(value="/tabledata", method=RequestMethod.POST)
+	public @ResponseBody Map<String,Object> getTableDataList(
+			@PathVariable("dbName")String dbName, 
+			@PathVariable("tableName")String tableName,
+			HttpSession hs,
+			Map<String,Object> map) {
+		Map<String, String> pMap = new HashMap<String, String>();
+		pMap.put("dbName", dbName);
+		pMap.put("tableName", tableName);
+		log.info("{}",pMap);
+		List<ColumnVO> columnList = cis.getColumnList(hs, pMap);
+		map.put("list", columnList);
+		log.info("{}",columnList);
 		return map;
 	}
+	
 }

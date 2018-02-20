@@ -9,5 +9,5 @@ import javax.servlet.http.HttpSession;
 public interface QueryService {
 	public List<List<Map<String, Object>>> getSelectQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap);
 
-	public void getUpdateQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap);
+	public int getUpdateQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap);
 }

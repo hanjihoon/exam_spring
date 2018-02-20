@@ -25,7 +25,6 @@ div.controls {
 .my_ftr {
 	background-color: white;
 	padding-top: 9px;
-	overflow: scroll
 }
 
 .my_ftr .text {
@@ -35,6 +34,7 @@ div.controls {
 	padding: 5px 10px;
 	height: 70px;
 	border: 1px solid #dfdfdf;
+	overflow: auto;
 }
 </style>
 <script>
@@ -42,10 +42,10 @@ var bodyLayout, dbTree,winF,popW;
 var aLay, bLay, cLay;
 var bTabs, bTab1, bTab2, bTab3, bActvId;
 var cTabs, cTab1, cTab2, cTab3, cActvId;
-var tableInfoGrid;
+var tableInfoGrid, tableDataGrid;
 var resultGrids = [];
-var select, sql, logList;
 var forDelTag = /\<\/?\w+\>/gi;
+var dbName;
 function connectionListCB(res){
    dbTree = aLay.attachTreeView({
        items: res.list
@@ -53,16 +53,19 @@ function connectionListCB(res){
    dbTree.attachEvent("onDblClick",function(id){
 	   var level = dbTree.getLevel(id);
       if(level==2){
-     	  var text =  dbTree.getItemText(id);
-    	  var au = new AjaxUtil("${root}/connection/tables/" + text + "/" + id,null,"get");
+     	  dbName =  dbTree.getItemText(id);
+    	  var au = new AjaxUtil("${root}/connection/tables/" + dbName + "/" + id,null,"post");
           au.send(tableListCB);
       }else if(level==3){
     	    var pId= dbTree.getParentId(id);
 			var dbName = dbTree.getItemText(pId);
 			var text = dbTree.getItemText(id);
 			var tableName = text.substring(0,text.indexOf(":"));
-			var au = new AjaxUtil("${root}/connection/columns/" + dbName + "/" + tableName,null,"get");
+			var au = new AjaxUtil("${root}/connection/columns/" + dbName + "/" + tableName,null,"post");
 			au.send(columnListCB);
+			var sql = "select * from "+tableName;
+	   		var auFQ = new AjaxUtilFQ("${root}/query/",sql,null,"post");
+			auFQ.send(tableDataDB);
       }
    });
 }
@@ -80,6 +83,7 @@ function dbListCB(res){
 	   }
 	   dbTree.openItem(parentId);
 	}
+	
 function tableListCB(res){
 	   var parentId = res.parentId;
 	   var i=1;
@@ -93,7 +97,32 @@ function tableListCB(res){
 	      dbTree.addItem(id, text, parentId);
 	   }
 	   dbTree.openItem(parentId);
+	   if(res.list){
+		  $("#resultMSG").append("<br><em><b>use "+dbName+"</em></b>;");
+	   }
 	}
+
+function tableDataDB(res){
+	if(res.lists){
+		tableInfoGrid = bTabs.tabs("tableData").attachGrid();
+		var columns = res.lists[0][0];
+		var headerStr = "";
+		var colTypeStr = "";
+		for(var key in columns){
+			if(key=="id") continue;
+			headerStr += key + ",";
+			colTypeStr += "ro,";
+		}
+		headerStr = headerStr.substr(0, headerStr.length-1);
+		colTypeStr = colTypeStr.substr(0, colTypeStr.length-1);
+        tableInfoGrid.setColumnIds(headerStr);
+		tableInfoGrid.setHeader(headerStr);
+		tableInfoGrid.setColTypes(colTypeStr);
+        tableInfoGrid.init();
+		tableInfoGrid.parse({data:res.lists[0]},"js");
+		console.log(res);
+	}
+}
 	
 function columnListCB(res){
 	if(res.list){
@@ -109,8 +138,8 @@ function columnListCB(res){
 		headerStr = headerStr.substr(0, headerStr.length-1);
 		colTypeStr = colTypeStr.substr(0, colTypeStr.length-1);
         tableInfoGrid.setColumnIds(headerStr);
-		tableInfoGrid.setHeader(headerStr);
-		tableInfoGrid.setColTypes(colTypeStr);
+		tableInfoGrid.setHeader(headerStr,["background-color:red;"]);
+		tableInfoGrid.setColTypes(colTypeStr);	
         tableInfoGrid.init();
 		tableInfoGrid.parse({data:res.list},"js");
 		console.log(res);
@@ -125,6 +154,7 @@ function querySelectCB(res){
 	if(res.conMSG){
 		alert(res.conMSG);
 	}
+
 	var cTabbar = cLay.attachTabbar();
 	if(res.lists){
 		var key;
@@ -149,28 +179,25 @@ function querySelectCB(res){
 			resultGrids[key].init();
 			resultGrids[key].parse({data:list},"js");
 		}
-		cTabbar.tabs("result"+key).setActive();
+		cTabbar.tabs("result0").setActive();
 	}
-	$("#resultMSG").append("<br><em><b>"+res.selectMsg+"</b></em>");
-	$("#resultMSG").append("<br><em><b>"+res.updateMsg+"</b></em>");
+	for(var sql of res.sqlMsg){
+		$("#resultMSG").append("<br><em><b>"+sql+"</b></em>");
+	}
+	$("#resultMSG").append("<br><em><b>"+res.logMsg+"</b></em>");
 		console.log(res);
 	}
-
 
 function addConnectionCB(res){
    console.log(res.msg);
 }
 
-/* function queryEvent(sql){
-	select = /select/gi;
-	if(select.test(sql)){
-		var auFQ = new AjaxUtilFQ("${root}/query/select/",sql,null,"post");
-		auFQ.send(querySelectCB);
-	}else{
-		var auFQ = new AjaxUtilFQ("${root}/query/update/",sql,null,"post");
-		auFQ.send(queryUpdateCB);
-	}
-} */
+function runQuery(sql){
+	sql = sql.replace(forDelTag," ");
+	var auFQ = new AjaxUtilFQ("${root}/query/",sql,null,"post");
+	auFQ.send(querySelectCB);
+}
+
 dhtmlxEvent(window,"load",function(){
 	bodyLayout = new dhtmlXLayoutObject(document.body,"3L");
 	logFoot = bodyLayout.attachFooter("footDiv");
@@ -187,7 +214,7 @@ dhtmlxEvent(window,"load",function(){
 	            alert("접속할 커넥션을 선택해주세요.");
 	            return;
 	         }
-	         var au = new AjaxUtil("${root}/connection/db_list/" + rowId,null,"get");
+	         var au = new AjaxUtil("${root}/connection/db_list/" + rowId,null,"post");
 	         au.send(dbListCB); 
 	      }else if(id=="addcon"){
 	         popW.show();
@@ -232,16 +259,27 @@ dhtmlxEvent(window,"load",function(){
 		    ]
 	});
 	
-   var qEditor = bTabs.tabs("sql").attachEditor({
+   var bTabsQueryEditor = bTabs.tabs("sql").attachEditor({
 	   content:"Type some Query here",
 	   });
-   qEditor.attachEvent("onAccess", function(eventName, evObj){
+   var bTabsQueryToolbar = bTabs.tabs("sql").attachToolbar();
+   bTabsQueryToolbar.addButton("run",1,"RUN");
+   bTabsQueryToolbar.addButton("clear",2,"CLEAR");
+   bTabsQueryToolbar.attachEvent("onClick",function(id){
+	      if(id=="run"){
+	    	var sql = bTabsQueryEditor.getContent()
+	    	runQuery(sql);
+	         
+	      }else if(id=="clear"){
+	    	  bTabsQueryEditor.setContent("");
+	      }
+	   })
+   bTabsQueryEditor.attachEvent("onAccess", function(eventName, evObj){
 	    if (eventName == "keydown") {
 		   	bActvId = bTabs.getActiveTab();
 		   	if(evObj.which==120 && evObj.ctrlKey && evObj.shiftKey && bActvId=="sql"){
-		   		sql = qEditor.getContent().replace(forDelTag,"");
-		   		var auFQ = new AjaxUtilFQ("${root}/query/select/",sql,null,"post");
-				auFQ.send(querySelectCB);
+		   		var sql = bTabsQueryEditor.getContent()
+		   		runQuery(sql);
 		   	}
 	    }
 	});

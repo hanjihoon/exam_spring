@@ -32,17 +32,16 @@ public class QueryServiceImpl implements QueryService {
 				map.put("id", ++index);
 			}
 		}
-		rMap.put("selectMsg", "/* Affected rows:" + qrLists.size() + "찾은 행: 0  경고: 0*/");
 		return qrLists;
 	}
 
 	@Override
-	public void getUpdateQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap) {
+	public int getUpdateQuery(ArrayList<String> sql, HttpSession hs, Map<String, Object> rMap) {
 		SqlSession ss = (SqlSession) hs.getAttribute("sqlSession");
 		int result = 0;
 		for (String str : sql) {
 			result += qdao.updateQuery(str, ss);
 		}
-		rMap.put("updateMsg", "/* Affected rows:" + result + "찾은 행: 0  경고: 0*/");
+		return result;
 	}
 }
