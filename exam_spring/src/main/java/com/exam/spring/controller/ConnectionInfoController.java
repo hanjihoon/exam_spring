@@ -38,8 +38,8 @@ public class ConnectionInfoController {
 	public @ResponseBody Map<String, Object> getConnectionInfoList(@RequestParam Map<String, Object> map,
 			HttpSession hs) {
 		EmployeeVo em = new EmployeeVo();
-		if (hs.getAttribute("em") != null) {
-			em = (EmployeeVo) hs.getAttribute("em");
+		if (hs.getAttribute("emp") != null) {
+			em = (EmployeeVo) hs.getAttribute("emp");
 		} else {
 			em.setEmID("sujang45");
 		}
