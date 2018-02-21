@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import com.exam.spring.dao.NaverTransDAO;
 
 @Service
-//@Aspect
+@Aspect
 public class LogAspect {
 	@Autowired
 	NaverTransDAO ntd;
@@ -38,6 +38,7 @@ public class LogAspect {
 			throws IOException, MyBatisSystemException, SQLSyntaxErrorException, SQLException, JsonMappingException,
 			com.fasterxml.jackson.databind.JsonMappingException, Exception {
 		log.info("@Around begin");
+		log.info("pjp=>",pjp);
 		Object obj = null;
 		long startTime = System.currentTimeMillis();
 		try {
@@ -48,7 +49,8 @@ public class LogAspect {
 			map.put("errorMSG", ntd.getText(e.getMessage()));
 			return map;
 		}
-		log.info("@Around end, RunTime : {} ms", (System.currentTimeMillis() - startTime));
+		long logTime = System.currentTimeMillis() - startTime;
+		log.info("@Around end, RunTime : {} ms", (logTime));
 		return obj;
 	}
 

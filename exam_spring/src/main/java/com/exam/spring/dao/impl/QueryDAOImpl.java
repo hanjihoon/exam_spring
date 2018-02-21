@@ -1,6 +1,6 @@
 package com.exam.spring.dao.impl;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class QueryDAOImpl implements QueryDAO {
 
 	@Override
 	public List<Map<String, Object>> selectQuery(String sql, SqlSession ss) {
-		List<Map<String, Object>> result = new LinkedList<Map<String, Object>>();
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 		result = ss.selectList("query.select", sql);
 		return result;
 	}

@@ -5,7 +5,7 @@
   
   <mapper namespace="query">
  
-  	<select id="select" resultType="map" parameterType="string">
+  	<select id="select" resultType="java.util.LinkedHashMap" parameterType="string">
   		${value}
   	</select>
   	

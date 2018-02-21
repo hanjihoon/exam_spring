@@ -177,13 +177,14 @@ var AjaxUtilFQ = function (url, params, type, dataType){
 	
 	this.send = function(callback){
 		if(callback){
-			this.callbackSuccess = function (res){
+			this.callbackSuccess=callback;
+			/*this.callbackSuccess = function (res){
 				if(res.errorMSG){
 					alert(res.errorMSG);
 					return;
 				}
 				callback(res);
-			}
+			}*/
 		}
 		$.ajax({ 
 	        type     : this.type

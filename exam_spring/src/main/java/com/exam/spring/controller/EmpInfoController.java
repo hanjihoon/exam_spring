@@ -32,6 +32,7 @@ public class EmpInfoController {
 		if (eis.login(map, em)) {
 			hs.setAttribute("emp", map.get("emp"));
 		}
+		log.info("emp_hs=>{}",hs.getAttribute("emp"));
 		return map;
 	}
 	

@@ -3,8 +3,6 @@ package com.exam.spring.dao;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 
 public interface QueryDAO {

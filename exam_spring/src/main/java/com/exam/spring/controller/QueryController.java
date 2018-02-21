@@ -35,13 +35,19 @@ public class QueryController {
 			ArrayList<String> updateSqlList = new ArrayList<String>();
 			ArrayList<String> selectSqlList = new ArrayList<String>();
 			String[] sqlList = sql.trim().split(";");
+			String[] forResultTableName;
+			List<String> resultTableName = new ArrayList<String>();
 			for (String str : sqlList) {
 				if (str.indexOf("select") != -1) {
 					selectSqlList.add(str);
+					forResultTableName = str.split("from");
+					resultTableName.add(forResultTableName[1].trim());
 				} else {
 					updateSqlList.add(str);
 				}
 			}
+
+			long startTime = System.currentTimeMillis();
 			if (selectSqlList.size() > 0) {
 				List<List<Map<String, Object>>> selectLists = new ArrayList<List<Map<String, Object>>>();
 				selectLists = qs.getSelectQuery(selectSqlList, hs, map);
@@ -49,15 +55,17 @@ public class QueryController {
 					selectResult += list.size();
 				}
 				sumResult += selectLists.size();
-				map.put("lists", selectLists);
+				map.put("selectLists", selectLists);
+				map.put("resultTableName", resultTableName);
 			}
 			if (updateSqlList.size() > 0) {
 				updateResult = qs.getUpdateQuery(updateSqlList, hs, map);
 				sumResult += updateSqlList.size();
 			}
+			long logTime = System.currentTimeMillis() - startTime;
 			map.put("sqlMsg", sqlList);
 			map.put("logMsg", "/* Affected rows: " + updateResult + " 찾은 행: " + selectResult + " 경고: 0 지속 시간 "
-					+ sumResult + "*/");
+					+ sumResult + " 수행시간 : " + logTime + "ms */");
 			log.info("{}", map);
 		} else {
 			map.put("conMSG", "커넥션이 필요합니다!");
