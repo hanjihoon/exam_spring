@@ -10,11 +10,7 @@
 	</settings>
 	
 	<typeAliases>
-		<!-- <typeAlias type="com.iot.spring.vo.Emp" alias="e" />
-		<typeAlias type="com.exam.spring.vo.Menu" alias="m" />
-		<typeAlias type="com.exam.spring.vo.ConnectionInfoVo" alias="ci" />
-		<typeAlias type="com.exam.spring.vo.TableVo" alias="tb" />
-		<typeAlias type="com.exam.spring.vo.ColumnInfoVo" alias="col" /> -->
+		
 		<typeAlias type="com.exam.spring.vo.EmployeeVo" alias="em" />
 		<typeAlias type="com.exam.spring.vo.ConnectionInfoVo" alias="ci" />
 		<typeAlias type="com.exam.spring.vo.TableVO" alias="tvo" />
@@ -22,10 +18,7 @@
 		
 	</typeAliases>
 	
-	<mappers><!-- 
-		<mapper resource="sql/emp.xml" />
-		<mapper resource="sql/menu.xml" />
-		<mapper resource="sql/connection_info.xml" /> -->
+	<mappers> 
 		<mapper resource="sql/employee_info.xml" />
 		<mapper resource="sql/connection_info.xml" />
 		<mapper resource="sql/query.xml" />

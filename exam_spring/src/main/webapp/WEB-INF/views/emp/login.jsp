@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,7 +12,6 @@
       winF = new dhtmlXWindows();
       winF.attachViewportTo("winVP");
       popW = winF.createWindow("win1",20,30,300,400);
-      //popW.hide(); 
       popW.button("close").hide();
       popW.button("minmax").hide();
       popW.button("park").hide();
@@ -22,10 +21,10 @@
       winF.window("win1").denyMove();
       winF.window("win1").denyResize();
       var formObj = [
-                 {type:"settings", offsetTop:12,name:"connectionInfo",labelAlign:"left"},
-               {type:"input",name:"emID", label:"아이디 : ",required:true},
-               {type:"password",name:"emPwd", label:"비밀번호 : ",required:true},
-               {type: "block", blockOffset: 0, list: [
+                  {type:"settings", offsetTop:12,name:"connectionInfo",labelAlign:"left"},
+                  {type:"input",name:"emID", label:"아이디 : ",required:true},
+                  {type:"password",name:"emPwd", label:"비밀번호 : ",required:true},
+                  {type: "block", blockOffset: 0, list: [
                   {type: "button", name:"loginBtn",value: "로그인"},
                   {type: "newcolumn"},
                   {type: "button", name:"cancelBtn",value: "취소"},
@@ -33,6 +32,10 @@
                   {type: "button", name:"joinBtn",value: "회원가입"}
                ]}
          ];
+      alert(<%=loginFailedCnt%>);
+      if(<%=loginFailedCnt%>==5){
+    	  formObj.push({type:"input",name:"emEmail", label:"이메일 : ",required:true});
+      }
       var form = popW.attachForm(formObj,true);
       
       form.attachEvent("onButtonClick",function(id){
@@ -52,6 +55,7 @@
       if(loader.xmlDoc.status == 200){
          var res = JSON.parse(res);
          alert(res.msg);
+         location.href="${pPath}/emp/login";
          if(res.biz){
             location.href="${root}/path/db/main";
          }
@@ -62,6 +66,6 @@
    
 </script>
 <body>
-   <div id="winVP"></div>
+	<div id="winVP"></div>
 </body>
 </html>

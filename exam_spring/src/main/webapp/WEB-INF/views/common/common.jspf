@@ -1,25 +1,37 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+	pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<c:set var="root" value="${pageContext.request.contextPath}"/>
-<c:set var="ver" value="?version=1.0.3"/>
-<c:set var="rPath" value="${root}/resources"/>
-<c:set var="pPath" value="${root}/path"/>
-<c:set var="dPath" value="${rPath}/dx"/>
+<%
+	ArrayList<Integer> loginFailedCheck = (ArrayList<Integer>) session.getAttribute("loginFailedCheck");
+	String str = "나다";
+	int loginFailedCnt = 0;
+	if (loginFailedCheck != null) {
+		loginFailedCnt = loginFailedCheck.size();
+	}
+%>
+
+<c:set var="root" value="${pageContext.request.contextPath}" />
+<c:set var="ver" value="?version=1.0.3" />
+<c:set var="rPath" value="${root}/resources" />
+<c:set var="pPath" value="${root}/path" />
+<c:set var="dPath" value="${rPath}/dx" />
 
 <script src="${rPath}/js/jquery-3.2.1.js${ver}" charset="utf-8"></script>
 <script src="${dPath}/dhtmlx.js${ver}" charset="utf-8"></script>
 <script src="${rPath}/js/common.js${ver}"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
-<link rel="stylesheet" type="text/css" href="${dPath}/fonts/font_roboto/roboto.css${ver}"/>
-<link rel="stylesheet" type="text/css" href="${dPath}/dhtmlx.css${ver}"/>
-<link rel="stylesheet" type="text/css" href="${rPath}/css/common.css${ver}"/>
+<link rel="stylesheet" type="text/css"
+	href="${dPath}/fonts/font_roboto/roboto.css${ver}" />
+<link rel="stylesheet" type="text/css" href="${dPath}/dhtmlx.css${ver}" />
+<link rel="stylesheet" type="text/css"
+	href="${rPath}/css/common.css${ver}" />
 
 <script type="text/javascript" charset="utf-8">
-   window.alert = dhtmlx.alert;
+	window.alert = dhtmlx.alert;
 </script>
 
 <!-- Chrome, Safari, IE -->

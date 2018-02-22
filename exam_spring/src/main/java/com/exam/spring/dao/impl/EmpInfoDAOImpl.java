@@ -16,7 +16,12 @@ public class EmpInfoDAOImpl implements EmpInfoDAO {
 	@Override
 	public EmployeeVo selectEmpInfo(EmployeeVo pEm) {
 		SqlSession ss = ssf.openSession();
-		EmployeeVo em = ss.selectOne("em.selectEmployee", pEm);
+		EmployeeVo em = new EmployeeVo();
+		try {
+			em = ss.selectOne("em.selectEmployee", pEm);
+		} catch (Exception e) {
+			return null;
+		}
 		ss.close();
 		return em;
 	}
