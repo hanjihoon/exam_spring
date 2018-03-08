@@ -14,7 +14,7 @@ public class NaverMsg {
 	public void setMessage(Message message) {
 		this.message = message;
 	}
-	
+
 	@JsonIgnoreProperties(ignoreUnknown = true)
 	public class Message{
 		private Result result;

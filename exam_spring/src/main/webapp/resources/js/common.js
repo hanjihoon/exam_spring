@@ -1,19 +1,3 @@
-/**
- * 
- */
-
-function pageMove(param){
-	if(param){
-		document.getElementById("urlStr").value = param;
-		$("#urlForm").submit();
-	}else{
-		alert("url을 입력해주세요.");
-	}
-}
-
-function urlSubmit(f){
-	return true;
-}
 
 var AjaxUtilDx = function (url, dxObj, type, dataType){
 	if(!url){
@@ -243,7 +227,7 @@ function returnSession(result){
 /*
  * dhtmlx 커스터 마이징
  */
-dhtmlXCellObject.prototype.hideAll = function(){
+/*dhtmlXCellObject.prototype.hideAll = function(){
    this.button("close").hide();
    this.button("minmax").hide();
    this.button("park").hide();
@@ -253,4 +237,4 @@ dhtmlXWindows.prototype.center = function(){
    this.window("win1").centerOnScreen();
    this.window("win1").denyMove();
    this.window("win1").denyResize();
-}
+}*/

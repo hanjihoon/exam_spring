@@ -281,7 +281,7 @@ dhtmlxEvent(window,"load",function(){
 	   })
    bTabsQueryEditor.attachEvent("onAccess", function(eventName, evObj){
 	    if (eventName == "keydown") {
-		   	if(evObj.which==120 && evObj.ctrlKey && evObj.shiftKey && bActvId=="sql"){
+		   	if(evObj.which==120 && evObj.ctrlKey && evObj.shiftKey){
 		   		var sql = bTabsQueryEditor.getContent();
 		   		runQuery(sql);
 		   	}

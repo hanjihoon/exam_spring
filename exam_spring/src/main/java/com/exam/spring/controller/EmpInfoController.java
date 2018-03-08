@@ -39,6 +39,7 @@ public class EmpInfoController {
 			map.put("msg", em.getEmName() + "님 로그인에 성공하셨습니다.");
 			map.put("biz", true);
 			map.put("emp", em);
+			loginFailedCheck = new ArrayList<Integer>();
 		} else {
 			if (loginFailedCheck.size() < 5) {
 				loginFailedCheck.add(1);
@@ -53,12 +54,11 @@ public class EmpInfoController {
 	public @ResponseBody Map<String, Object> checkID(EmployeeVo em, HttpSession hs) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (eis.getEmpInfo(em) != null) {
-			hs.setAttribute("checkId", 0);
 			map.put("msg", "아이디가 중복됩니다.");
 		} else {
-			hs.setAttribute("checkId", 1);
 			map.put("msg", "사용가능한 아이디입니다.");
 		}
+		hs.setAttribute("checkId", 0);
 		return map;
 	}
 
@@ -72,6 +72,7 @@ public class EmpInfoController {
 			if (eis.join(em) == 1) {
 				map.put("msg", "회원 가입 성공");
 				map.put("biz", true);
+				hs.setAttribute("checkId", null);
 			} else if (eis.join(em) == 2) {
 				map.put("msg", "아이디 중복입니다!");
 			}

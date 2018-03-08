@@ -6,6 +6,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Login Screen</title>
 </head>
+
+
+
 <script>
    var winF,popW;
    $(document).ready(function(){
@@ -32,7 +35,6 @@
                   {type: "button", name:"joinBtn",value: "회원가입"}
                ]}
          ];
-      alert(<%=loginFailedCnt%>);
       if(<%=loginFailedCnt%>==5){
     	  formObj.push({type:"input",name:"emEmail", label:"이메일 : ",required:true});
       }

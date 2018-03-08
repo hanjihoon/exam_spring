@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import com.exam.spring.dao.NaverTransDAO;
 
 @Service
-@Aspect
+//@Aspect
 public class LogAspect {
 	@Autowired
 	NaverTransDAO ntd;
