@@ -1,3 +1,4 @@
+
 package com.exam.spring.controller;
 
 import java.util.HashMap;
@@ -66,18 +67,9 @@ public class ConnectionInfoController {
 	}
 
 	@RequestMapping(value="/insert", method=RequestMethod.POST)
-	public @ResponseBody Map<String,Object> insertConnectionInfo(ConnectionInfoVo ci, HttpSession hs) {
-		Map<String,Object> map = new HashMap<String,Object>();
+	public @ResponseBody Map<String,Object> insertConnectionInfo(@Valid ConnectionInfoVo ci, Map<String,Object> map) {
 		log.info("ci=>{}",ci);
-		log.info("emp_hs=>{}",hs.getAttribute("emp"));
-		if(hs.getAttribute("emp")!=null) {
-		EmployeeVo emp = (EmployeeVo)hs.getAttribute("emp");
-		ci.setEmID(emp.getEmID());
 		cis.getInsertConnectionInfo(map, ci);
-		}else {
-			map.put("msg","홈페이지 로그인이 필요합니다.");
-		}
-		log.info("map=>{}",map);
 		return map;
 	}
 	@RequestMapping(value="/tables/{dbName}/{parentId}", method=RequestMethod.POST)
